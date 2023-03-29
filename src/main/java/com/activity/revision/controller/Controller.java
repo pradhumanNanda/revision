@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
 import com.activity.revision.dataGenerator.DataGenerator;
 import com.activity.revision.requests.DeleteRequest;
 import com.activity.revision.requests.SearchRequest;
@@ -27,18 +26,16 @@ import com.aerospike.client.Key;
 
 @RestController
 @RequestMapping("/user")
+@SuppressWarnings("unused")
 public class Controller {
 	
 	private UserService userService;
-	
-    private AerospikeClient aerospikeClient;
     
-    private DataGenerator dataGenerator;
+	private DataGenerator dataGenerator;
 	
-	public Controller(UserService userService,  AerospikeClient aerospikeClient, DataGenerator dataGenerator) {
+	public Controller(UserService userService, DataGenerator dataGenerator) {
 		super();
 		this.userService = userService;
-		this.aerospikeClient = aerospikeClient;
 		this.dataGenerator = dataGenerator;
 	}
 	
@@ -62,21 +59,15 @@ public class Controller {
 		return new ResponseStatus(SystemError.OK);
 	}
 	
+	@GetMapping("/cacheData")
+	public ResponseStatus saveData() {
+		userService.saveData();
+		return new ResponseStatus(SystemError.OK);
+	}
+	
 	@GetMapping("/getAllEmployees")
 	public List<UserDb> getAll(){
-		List<UserDb> list = userService.getAll();
-		list.forEach(i->{
-			Key key = new Key("test", "set1", dataGenerator.generateKey());
-			aerospikeClient.put(aerospikeClient.getWritePolicyDefault(), key, 
-					new Bin("userNmae",i.getUserName()), 
-	    			new Bin("email", i.getEmail()), 
-	    			new Bin("password", i.getPassword()), 
-	    			new Bin("ContactNumber", i.getContactNumber()), 
-	    			new Bin("salary", 0.0),
-	    			new Bin("role", i.getRole().toString()));
-		});
-    	
-		return list;
+		return userService.getAll();
 	}
 	
 	@GetMapping("/setAllNewUsers")

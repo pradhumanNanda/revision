@@ -35,4 +35,6 @@ public interface UserService {
 	
 	UserDb getById(Long id);
 	
+	void saveData();
+	
 }

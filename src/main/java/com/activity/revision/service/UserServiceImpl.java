@@ -4,7 +4,6 @@ import java.security.GeneralSecurityException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
-
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -25,6 +24,9 @@ import com.activity.revision.utils.AccessControl;
 import com.activity.revision.utils.Constants;
 import com.activity.revision.utils.PasswordEncDecUtil;
 import com.activity.revision.utils.UserValidator;
+import com.aerospike.client.AerospikeClient;
+import com.aerospike.client.Bin;
+import com.aerospike.client.Key;
 
 @Service
 public class UserServiceImpl implements UserService{
@@ -40,9 +42,11 @@ public class UserServiceImpl implements UserService{
 	private UserValidator userValidator;
 	
 	private QueryBuilder queryBuilder;
+	
+	private AerospikeClient aerospikeClient;
 
 	public UserServiceImpl(UserRepo userRepo, AuthenticationManager authenticationManager, DataGenerator dataGenerator,
-			AccessControl accessControl, UserValidator userValidator, QueryBuilder queryBuilder) {
+			AccessControl accessControl, UserValidator userValidator, QueryBuilder queryBuilder, AerospikeClient aerospikeClient) {
 		super();
 		this.userRepo = userRepo;
 		this.authenticationManager = authenticationManager;
@@ -50,6 +54,7 @@ public class UserServiceImpl implements UserService{
 		this.accessControl = accessControl;
 		this.userValidator = userValidator;
 		this.queryBuilder = queryBuilder;
+		this.aerospikeClient = aerospikeClient;
 	}
 
 	@Override
@@ -215,6 +220,23 @@ public class UserServiceImpl implements UserService{
 	@Override
 	public UserDb getById(Long id) {
 		return userRepo.findById(id).get();
+	}
+
+	@Override
+	public void saveData() {
+		if(!accessControl.checkSuperAccess()) return;
+		List<UserDb> userDbs = userRepo.findAll();
+		userDbs.forEach(i->{
+			Key key = new Key("test", "set1", i.getId());
+			Bin[] bins = new Bin[]{new Bin("userName", i.getUserName()),
+								   new Bin("email", i.getEmail()), 
+								   new Bin("password", i.getPassword()), 
+								   new Bin("contactNumber", i.getContactNumber()), 
+								   new Bin("salary", i.getSalary()), 
+								   new Bin("Role", i.getRole().toString())};
+			aerospikeClient.put(aerospikeClient.getWritePolicyDefault(), key, bins);
+		});
+		
 	}
 
 
