@@ -2,13 +2,15 @@ package com.activity.revision.user;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
-import org.hibernate.annotations.Type;
-import org.hibernate.annotations.TypeDef;
-import com.vladmihalcea.hibernate.type.json.JsonBinaryType;
+
+import org.springframework.data.aerospike.mapping.Document;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -20,7 +22,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "userTable")
-@TypeDef(name = "jsonb", typeClass = JsonBinaryType.class)
+@Document(collection = "set1")
 public class UserDb {
 	
 	@Id @GeneratedValue(strategy= GenerationType.SEQUENCE) private Long id;
@@ -37,6 +39,6 @@ public class UserDb {
 	
 	@Column(name = "isDeleted") private Boolean isDeleted;
 	
-	@Type(type = "jsonb") @Column(name = "Role", columnDefinition = "jsonb") private Role role;
+	@Column(name = "role") @Enumerated(EnumType.STRING)private Role role;
 	
 }

@@ -23,7 +23,7 @@ public interface UserService {
 	
 	boolean addUser(UserSignUpRequest userSignUpRequest, BindingResult bindingResult) throws GeneralSecurityException;
 	
-	boolean addNewUser() throws GeneralSecurityException;
+	List<UserDb> addNewUser() throws GeneralSecurityException;
 	
 	List<UserDb> getAll();
 	
@@ -32,4 +32,7 @@ public interface UserService {
 	List<UserDb> search(SearchRequest searchRequest);
 	
 	boolean setSalary(SetSalaryRequest salaryRequest);
+	
+	UserDb getById(Long id);
+	
 }

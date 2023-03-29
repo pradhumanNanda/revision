@@ -32,9 +32,6 @@ public class UserValidator implements Validator{
         if (userSignUpRequest.getUserName().length() < 4) {
         	errors.reject("username","Username length less than 6!");
         }
-		
 	}
-
-
 
 }

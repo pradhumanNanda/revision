@@ -41,13 +41,13 @@ public class QueryBuilder {
 		List<Predicate> searchCriteria = new ArrayList<>();
 		
 		if(userName != null) {
-			searchCriteria.add(criteriaBuilder.like(root.get("userName"), "%"+userName+"%"));
+			searchCriteria.add(criteriaBuilder.like(root.get("userName"), userName));
 		}
 		if(email != null) {
-			searchCriteria.add(criteriaBuilder.like(root.get("email"), "%"+email+"%"));
+			searchCriteria.add(criteriaBuilder.like(root.get("email"), email));
 		}
 		if(contactNumber != null) {
-			searchCriteria.add(criteriaBuilder.like(root.get("contactNumber"), "%"+contactNumber+"%"));
+			searchCriteria.add(criteriaBuilder.like(root.get("contactNumber"), contactNumber));
 		}
 		if(salaryRange != null) {
 			Integer idx = salaryRange.indexOf('-');
@@ -57,10 +57,10 @@ public class QueryBuilder {
 			searchCriteria.add(criteriaBuilder.between(root.get("salary"),lowerBound,upperBound));
 		}
 		if(isDeleted != null) {
-			searchCriteria.add(criteriaBuilder.like(root.get("isDeleted"), "%"+isDeleted+"%"));
+			searchCriteria.add(criteriaBuilder.equal(root.get("isDeleted"), isDeleted));
 		}
 		if(role != null) {
-			searchCriteria.add(criteriaBuilder.like(root.get("role"), "%"+role+"%"));
+			searchCriteria.add(criteriaBuilder.equal(root.get("role"), role));
 		}
 		
 		criteriaQuery.select(root).where(criteriaBuilder.and(searchCriteria.toArray(new Predicate[searchCriteria.size()])));

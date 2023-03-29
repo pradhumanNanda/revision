@@ -5,20 +5,19 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.Bean;
-
 import com.activity.revision.repo.UserRepo;
 import com.activity.revision.user.Role;
 import com.activity.revision.user.UserDb;
 import com.activity.revision.utils.Constants;
 import com.activity.revision.utils.PasswordEncDecUtil;
 
-@SpringBootApplication
 @EnableCaching
+@SpringBootApplication
 public class RevisionApplication {
 	
     public static void main(String[] args) {
-        SpringApplication.run(RevisionApplication.class, args);
-        
+    	SpringApplication.run(RevisionApplication.class, args);
+
     }
     @Bean
     CommandLineRunner init(UserRepo userRepo){
@@ -33,5 +32,5 @@ public class RevisionApplication {
 									            		role(Role.SUPERADMIN).build());
         };
     }
-
 }
+

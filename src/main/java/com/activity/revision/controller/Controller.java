@@ -2,15 +2,15 @@ package com.activity.revision.controller;
 
 import java.security.GeneralSecurityException;
 import java.util.List;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.annotation.CachePut;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import com.activity.revision.dataGenerator.DataGenerator;
 import com.activity.revision.requests.DeleteRequest;
 import com.activity.revision.requests.SearchRequest;
 import com.activity.revision.requests.SetRoleRequest;
@@ -21,21 +21,28 @@ import com.activity.revision.response.ResponseStatus;
 import com.activity.revision.response.SystemError;
 import com.activity.revision.service.UserService;
 import com.activity.revision.user.UserDb;
+import com.aerospike.client.AerospikeClient;
+import com.aerospike.client.Bin;
+import com.aerospike.client.Key;
 
 @RestController
 @RequestMapping("/user")
 public class Controller {
 	
-	@Autowired UserService userService;
+	private UserService userService;
 	
-	@GetMapping("/hey")
-	public String sayHello() {
-		return "Hello!!";
+    private AerospikeClient aerospikeClient;
+    
+    private DataGenerator dataGenerator;
+	
+	public Controller(UserService userService,  AerospikeClient aerospikeClient, DataGenerator dataGenerator) {
+		super();
+		this.userService = userService;
+		this.aerospikeClient = aerospikeClient;
+		this.dataGenerator = dataGenerator;
 	}
 	
 	@PostMapping("/signUp")
-	@Cacheable(value = "test")
-	@CachePut(value = "test", cacheNames = "test")
 	public ResponseStatus signup(@RequestBody UserSignUpRequest userSignUpRequest) throws GeneralSecurityException{
 		userService.signinUser(userSignUpRequest);
 		return new ResponseStatus(SystemError.OK);
@@ -50,31 +57,40 @@ public class Controller {
 	}
 	
 	@GetMapping("/addNewUsers")
-	@Cacheable(value = "test")
-	@CachePut(value = "test", cacheNames = "test")
 	public ResponseStatus addNewUser() throws GeneralSecurityException{
 		userService.addNewUser();
 		return new ResponseStatus(SystemError.OK);
 	}
 	
 	@GetMapping("/getAllEmployees")
-	@Cacheable(value = "test")
-	@CachePut(value = "test", cacheNames = "test")
 	public List<UserDb> getAll(){
-		return userService.getAll();
+		List<UserDb> list = userService.getAll();
+		list.forEach(i->{
+			Key key = new Key("test", "set1", dataGenerator.generateKey());
+			aerospikeClient.put(aerospikeClient.getWritePolicyDefault(), key, 
+					new Bin("userNmae",i.getUserName()), 
+	    			new Bin("email", i.getEmail()), 
+	    			new Bin("password", i.getPassword()), 
+	    			new Bin("ContactNumber", i.getContactNumber()), 
+	    			new Bin("salary", 0.0),
+	    			new Bin("role", i.getRole().toString()));
+		});
+    	
+		return list;
 	}
 	
 	@GetMapping("/setAllNewUsers")
-	@Cacheable(value = "test")
-	@CachePut(value = "test", cacheNames = "test")
 	public ResponseStatus setAllNewUsers() {
 		userService.setAllEmployee();
 		return new ResponseStatus(SystemError.OK); 
 	}
 	
+	@GetMapping("/getById/{id}")
+	public UserDb getById(@PathVariable Long id) {
+		return userService.getById(id);
+	}
+	
 	@PostMapping("/addNew")
-	@Cacheable(value = "test")
-	@CachePut(value = "test", cacheNames = "test")
 	public ResponseStatus addNew(@RequestBody UserSignUpRequest userSignUpRequest, BindingResult bindingResult) throws GeneralSecurityException {
 		ResponseStatus responseStatus;
 		if(userService.addUser(userSignUpRequest, bindingResult)) responseStatus = new ResponseStatus(SystemError.OK);
@@ -86,8 +102,6 @@ public class Controller {
 	}
 	
 	@PostMapping("/deleteUser")
-	@Cacheable(value = "test")
-	@CachePut(value = "test", cacheNames = "test")
 	public ResponseStatus deleteUser(@RequestBody DeleteRequest deleteRequest) {
 		ResponseStatus responseStatus;
 		if(userService.delete(deleteRequest)) responseStatus = new ResponseStatus(SystemError.OK);
@@ -96,8 +110,6 @@ public class Controller {
 	}
 	
 	@PostMapping("/setRole")
-	@Cacheable(value = "test")
-	@CachePut(value = "test", cacheNames = "test")
 	public ResponseStatus setRole(@RequestBody SetRoleRequest setRoleRequest) {
 		ResponseStatus responseStatus;
 		if(userService.setRole(setRoleRequest)) responseStatus = new ResponseStatus(SystemError.OK);
@@ -106,8 +118,6 @@ public class Controller {
 	}
 	
 	@PostMapping("/setSalary")
-	@Cacheable(value = "test")
-	@CachePut(value = "test", cacheNames = "test")
 	public ResponseStatus setSalary(@RequestBody SetSalaryRequest setSalaryRequest) {
 		ResponseStatus responseStatus;
 		if(userService.setSalary(setSalaryRequest)) responseStatus = new ResponseStatus(SystemError.OK);

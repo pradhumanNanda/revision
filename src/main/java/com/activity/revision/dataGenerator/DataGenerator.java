@@ -13,6 +13,10 @@ import com.github.javafaker.Faker;
 @Service
 public class DataGenerator {
 	Faker faker = new Faker();
+	
+	public String generateKey() {
+		return faker.numerify("######");
+	}
 	public UserDb generateCustomer() throws GeneralSecurityException {
 		String userName = faker.name().username();
 		String email = faker.name().firstName()+faker.name().lastName()+faker.number().digits(3)+"@gmail.com";

@@ -10,9 +10,11 @@ import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import lombok.RequiredArgsConstructor;
 
 @Configuration
 @EnableWebSecurity
+@RequiredArgsConstructor
 @SuppressWarnings("deprecation")
 public class Security extends WebSecurityConfigurerAdapter{
 	
@@ -20,7 +22,7 @@ public class Security extends WebSecurityConfigurerAdapter{
 	
 	@Autowired SecurityFilter securityFilter;
 	
-	private static String[] urlStrings = new String[] { "/user/signUp", "/user/logIn", "/user/hey"};
+	private static String[] urlStrings = new String[] { "/user/signUp", "/user/logIn"};
  	
 	@Override
 	protected void configure(AuthenticationManagerBuilder auth) throws Exception {

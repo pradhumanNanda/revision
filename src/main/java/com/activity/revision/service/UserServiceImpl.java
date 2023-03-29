@@ -1,9 +1,10 @@
 package com.activity.revision.service;
 
 import java.security.GeneralSecurityException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
-import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -27,19 +28,30 @@ import com.activity.revision.utils.UserValidator;
 
 @Service
 public class UserServiceImpl implements UserService{
+	
+	private UserRepo userRepo;
+	
+	private AuthenticationManager authenticationManager;
+	
+	private DataGenerator dataGenerator;
+	
+	private AccessControl accessControl;
+	
+	private UserValidator userValidator;
+	
+	private QueryBuilder queryBuilder;
 
-	@Autowired UserRepo userRepo;
-	
-	@Autowired AuthenticationManager authenticationManager;
-	
-	@Autowired DataGenerator dataGenerator;
-	
-	@Autowired AccessControl accessControl;
-	
-	@Autowired UserValidator userValidator;
-	
-	@Autowired QueryBuilder queryBuilder;
-	
+	public UserServiceImpl(UserRepo userRepo, AuthenticationManager authenticationManager, DataGenerator dataGenerator,
+			AccessControl accessControl, UserValidator userValidator, QueryBuilder queryBuilder) {
+		super();
+		this.userRepo = userRepo;
+		this.authenticationManager = authenticationManager;
+		this.dataGenerator = dataGenerator;
+		this.accessControl = accessControl;
+		this.userValidator = userValidator;
+		this.queryBuilder = queryBuilder;
+	}
+
 	@Override
 	public void signinUser(UserSignUpRequest userSignUpRequest) throws GeneralSecurityException {
 		
@@ -108,16 +120,18 @@ public class UserServiceImpl implements UserService{
 	}
 
 	@Override
-	public boolean addNewUser() throws GeneralSecurityException{
+	public List<UserDb> addNewUser() throws GeneralSecurityException{
+		
+		List<UserDb> resDbs = new ArrayList<>();
 		
 		if(accessControl.checkSuperAccess()) {
 			
-			for(int i=0;i<10;i++) userRepo.save(dataGenerator.generateCustomer());
+			for(int i=0;i<10;i++) resDbs.add(userRepo.save(dataGenerator.generateCustomer()));
 			
-			return true;		
+			return resDbs;
 		}
 	
-		return false;
+		return resDbs;
 		
 	}
 
@@ -197,5 +211,11 @@ public class UserServiceImpl implements UserService{
 		
 		return false;
 	}
+
+	@Override
+	public UserDb getById(Long id) {
+		return userRepo.findById(id).get();
+	}
+
 
 }
