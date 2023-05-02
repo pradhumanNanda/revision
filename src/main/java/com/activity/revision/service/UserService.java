@@ -23,7 +23,7 @@ public interface UserService {
 	
 	boolean addUser(UserSignUpRequest userSignUpRequest, BindingResult bindingResult) throws GeneralSecurityException;
 	
-	List<UserDb> addNewUser() throws GeneralSecurityException;
+	void addNewUser() throws GeneralSecurityException;
 	
 	List<UserDb> getAll();
 	

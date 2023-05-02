@@ -1,14 +1,15 @@
 package com.activity.revision.service;
 
 import java.security.GeneralSecurityException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
+
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.BindingResult;
+
 import com.activity.revision.criteriaBuilder.QueryBuilder;
 import com.activity.revision.dataGenerator.DataGenerator;
 import com.activity.revision.repo.UserRepo;
@@ -125,18 +126,9 @@ public class UserServiceImpl implements UserService{
 	}
 
 	@Override
-	public List<UserDb> addNewUser() throws GeneralSecurityException{
+	public void addNewUser() throws GeneralSecurityException{
 		
-		List<UserDb> resDbs = new ArrayList<>();
-		
-		if(accessControl.checkSuperAccess()) {
-			
-			for(int i=0;i<10;i++) resDbs.add(userRepo.save(dataGenerator.generateCustomer()));
-			
-			return resDbs;
-		}
-	
-		return resDbs;
+		if(accessControl.checkSuperAccess()) dataGenerator.generateCustomer();
 		
 	}
 
