@@ -30,22 +30,22 @@ import lombok.NoArgsConstructor;
 @TypeDef(name="jsonb", typeClass = JsonBinaryType.class)
 public class UserDb {
 	
-	@Id @GeneratedValue(strategy= GenerationType.SEQUENCE) private Long id;
+	@Id @GeneratedValue(strategy= GenerationType.AUTO) private Long id;
 	
-	@Column(name = "UserName") private String userName;
+	@Column(name = "userName") private String userName;
 	
-	@Column(name = "email", unique = true, nullable = false) private String email;
+	@Column(name = "email", nullable = false) private String email;
 	
 	@Column(name = "password") private String password;
 	
-	@Column(name = "ContactNumber") private String contactNumber;
+	@Column(name = "contactNumber") private String contactNumber;
 	
-	@Column(name = "Salary") private Double salary;
+	@Column(name = "salary") private Double salary;
 	
 	@Column(name = "isDeleted") private Boolean isDeleted;
 	
 	@Type(type = "jsonb") @Column(name = "address",columnDefinition = "jsonb") private Address address;
 	
-	@Column(name = "role") @Enumerated(EnumType.STRING)private Role role;
+	@Column(name = "role") @Enumerated(EnumType.STRING) private Role role;
 	
 }

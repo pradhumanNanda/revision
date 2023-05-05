@@ -29,9 +29,11 @@ public class DataGenerator {
 	}
 	public void generateCustomer() throws GeneralSecurityException {
 		
-		ExecutorService service = Executors.newFixedThreadPool(25);
+		ExecutorService service = Executors.newFixedThreadPool(8);
 		
 		for(int i=0;i<100000;i++) service.execute(new Task());
+		
+		if(!service.isShutdown()) service.shutdown();
 		
 	}
 	
