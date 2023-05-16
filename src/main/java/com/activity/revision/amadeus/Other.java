@@ -1,6 +1,6 @@
 package com.activity.revision.amadeus;
 
-import java.util.List;
+import java.util.ArrayList;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
@@ -10,6 +10,6 @@ import lombok.Data;
 @XmlAccessorType(XmlAccessType.FIELD)
 public class Other {
 	
-	@XmlElement(name = "OtherMetadata") private List<OtherMetadata> otherMetadata;
+	@XmlElement(name = "OtherMetadata") private ArrayList<OtherMetadataList> otherMetadata;
 
 }

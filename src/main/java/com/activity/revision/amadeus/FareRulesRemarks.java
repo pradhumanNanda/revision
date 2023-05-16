@@ -7,12 +7,8 @@ import lombok.Data;
 
 @Data
 @XmlAccessorType(XmlAccessType.FIELD)
-public class Panelty {
+public class FareRulesRemarks {
 	
-	@XmlElement(name = "PenaltyID") private String penaltyID;
-	
-	@XmlElement(name = "DescText") private String descText;
-	
-	@XmlElement(name = "ChangeFeeInd") private Boolean changeFeeInd;
+	@XmlElement(name = "FareRulesRemark") private FareRulesRemark fareRulesRemark;
 
 }

@@ -7,8 +7,10 @@ import lombok.Data;
 
 @Data
 @XmlAccessorType(XmlAccessType.FIELD)
-public class OtherMetadata {
+public class DescriptionMetadata {
 	
-	@XmlElement(name = "CurrencyMetadatas") private CurrencyMetadatas currencyMetadatas;
+	@XmlElement(name = "Topic") private String topic;
+	
+	@XmlElement(name = "Sequence") private Long sequence;
 
 }

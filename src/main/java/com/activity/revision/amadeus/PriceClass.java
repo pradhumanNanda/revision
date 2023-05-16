@@ -1,6 +1,6 @@
 package com.activity.revision.amadeus;
 
-import java.util.List;
+import java.util.ArrayList;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
@@ -14,7 +14,7 @@ public class PriceClass {
 	
 	@XmlElement(name = "Name") private String name;
 	
-	@XmlElement(name = "Desc") private List<Desc> desc;
+	@XmlElement(name = "Desc") private ArrayList<Desc> desc;
 
 	
 }

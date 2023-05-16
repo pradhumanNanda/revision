@@ -1,7 +1,6 @@
 package com.activity.revision.amadeus;
 
-import java.util.Map;
-
+import java.util.ArrayList;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
@@ -17,6 +16,6 @@ public class OriginDest {
 	
 	@XmlElement(name = "OriginDestID") private String originDestID;
 	
-	@XmlElement(name = "PaxJourneyRefID") private Map<Long,String> paxJourneyRefID;
+	@XmlElement(name = "PaxJourneyRefID") private ArrayList<String> paxJourneyRefID;
 
 }
