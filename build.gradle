@@ -21,7 +21,9 @@ dependencies {
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
     implementation group: 'org.hibernate', name: 'hibernate-core', version: '5.6.9.Final'
    	implementation group: 'com.vladmihalcea', name: 'hibernate-types-52', version: '2.2.2'
-   	implementation 'com.github.javafaker:javafaker:1.0.2'
+   	implementation group: 'javax.xml.bind', name: 'jaxb-api', version: '2.3.0'
+    implementation ('com.github.javafaker:javafaker:1.0.2') { exclude module: 'org.yaml' }
+    implementation group: 'org.yaml', name: 'snakeyaml', version: '1.26'
    	compileOnly 'org.projectlombok:lombok:1.18.4'
     annotationProcessor 'org.projectlombok:lombok:1.18.4'
     implementation 'org.json:json:20171018'
@@ -34,7 +36,10 @@ dependencies {
     implementation group: 'com.aerospike', name: 'aerospike-client', version: '4.1.2'
 	implementation 'com.aerospike:spring-data-aerospike:3.3.0' 
 	annotationProcessor "org.springframework.boot:spring-boot-configuration-processor"
-	
+	implementation group: 'org.springframework', name: 'spring-oxm', version: '3.0.0.RELEASE'
+	implementation 'org.apache.cxf:cxf-core:3.5.0'
+	implementation 'org.apache.cxf:cxf-rt-bindings-soap:3.5.0'
+    implementation 'javax.xml.soap:javax.xml.soap-api:1.4.0'
 }
 
 tasks.named('test') {

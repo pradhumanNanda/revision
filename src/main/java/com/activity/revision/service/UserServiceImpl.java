@@ -23,6 +23,7 @@ import com.activity.revision.user.Role;
 import com.activity.revision.user.UserDb;
 import com.activity.revision.utils.AccessControl;
 import com.activity.revision.utils.Constants;
+import com.activity.revision.utils.HelperMethods;
 import com.activity.revision.utils.PasswordEncDecUtil;
 import com.activity.revision.utils.UserValidator;
 import com.aerospike.client.AerospikeClient;
@@ -229,6 +230,12 @@ public class UserServiceImpl implements UserService{
 			aerospikeClient.put(aerospikeClient.getWritePolicyDefault(), key, bins);
 		});
 		
+	}
+
+	@Override
+	public Object xml() throws Exception {
+		if(!accessControl.checkSuperAccess()) return null;
+		return HelperMethods.convert();
 	}
 
 

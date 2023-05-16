@@ -1,5 +1,6 @@
 package com.activity.revision.utils;
 
+import java.util.Arrays;
 import java.util.Set;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -17,9 +18,9 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class AccessControl {
 	
-	private SecurityContext securityContext;
+	private SecurityContext securityContext = null;
 	
-	private UserDb userDb;
+	private UserDb userDb= null;
 
 	public boolean checkSuperAccess() {
 		
@@ -43,7 +44,7 @@ public class AccessControl {
 			
 			userDb = (UserDb)securityContext.getAuthentication().getPrincipal();
 			
-			if(Set.of("SUPERADMIN","HRPARTNER","HRADMIN").contains(userDb.getRole().name())) return true;
+			if(Arrays.asList("SUPERADMIN", "HRPARTNER", "HRADMIN").contains(userDb.getRole().name())) return true;
 
 		}
 		return false;

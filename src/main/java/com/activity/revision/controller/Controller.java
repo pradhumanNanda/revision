@@ -2,6 +2,9 @@ package com.activity.revision.controller;
 
 import java.security.GeneralSecurityException;
 import java.util.List;
+
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -119,6 +122,13 @@ public class Controller {
 	@PostMapping("/search")
 	public List<UserDb> search(@RequestBody SearchRequest searchRequest) {
 		return userService.search(searchRequest);
+	}
+	
+	@GetMapping("/data")
+	public ResponseStatus xml() throws Exception {
+		ResponseStatus responseStatus = new ResponseStatus(SystemError.OK);
+		responseStatus.setObject(userService.xml());
+		return responseStatus;
 	}
 	
 }

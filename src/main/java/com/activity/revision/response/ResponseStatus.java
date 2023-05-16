@@ -13,6 +13,8 @@ public class ResponseStatus {
 	
 	private String message;
 	
+	private Object object;
+	
 	public ResponseStatus(SystemError systemError){
 		super();
 		this.statusCode = systemError.getStatusCode();

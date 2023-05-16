@@ -2,7 +2,9 @@ package com.activity.revision.service;
 
 import java.security.GeneralSecurityException;
 import java.util.List;
+
 import org.springframework.validation.BindingResult;
+
 import com.activity.revision.requests.DeleteRequest;
 import com.activity.revision.requests.SearchRequest;
 import com.activity.revision.requests.SetRoleRequest;
@@ -36,5 +38,7 @@ public interface UserService {
 	UserDb getById(Long id);
 	
 	void saveData();
+	
+	Object xml() throws Exception;
 	
 }
