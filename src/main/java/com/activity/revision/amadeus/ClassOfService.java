@@ -10,6 +10,6 @@ import lombok.Data;
 @XmlAccessorType(XmlAccessType.FIELD)
 public class ClassOfService {
 	
-	@XmlElement(name = "Code") private String code;
+	@XmlElement(name = "Code") private Code code;
 
 }

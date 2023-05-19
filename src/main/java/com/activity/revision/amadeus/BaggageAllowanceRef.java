@@ -2,17 +2,17 @@ package com.activity.revision.amadeus;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
-
 import lombok.Data;
 
 @Data
 @XmlAccessorType(XmlAccessType.FIELD)
-public class CurrencyMetadata {
-	
-	@XmlElement(name = "Name") private String name;
-	
-	@XmlAttribute(name = "MetadataKey") private String metadataKey;
+public class BaggageAllowanceRef {
 
+	@XmlElement(name = "BaggageAllowanceID") private String baggageAllowanceID;
+	
+	@XmlElement(name = "TypeCode") private String typeCode;
+	
+	@XmlElement(name = "WeightAllowance") private WeightAllowance weightAllowance;
+	
 }
