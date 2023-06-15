@@ -47,5 +47,14 @@ public class UserDb {
 	@Type(type = "jsonb") @Column(name = "address",columnDefinition = "jsonb") private Address address;
 	
 	@Column(name = "role") @Enumerated(EnumType.STRING) private Role role;
+
+	@Override
+	public String toString() {
+		return "id=" + id + ", userName=" + userName + ", email=" + email + ", password=" + password
+				+ ", contactNumber=" + contactNumber + ", salary=" + salary + ", isDeleted=" + isDeleted + ", address="
+				+ address + ", role=" + role;
+	}
+	
+	
 	
 }

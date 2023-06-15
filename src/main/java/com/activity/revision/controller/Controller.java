@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import com.activity.revision.dataGenerator.DataGenerator;
+import com.activity.revision.requests.ChatRequest;
 import com.activity.revision.requests.DeleteRequest;
 import com.activity.revision.requests.SearchRequest;
 import com.activity.revision.requests.SetRoleRequest;
@@ -23,6 +24,8 @@ import com.activity.revision.response.ResponseStatus;
 import com.activity.revision.response.SystemError;
 import com.activity.revision.service.UserService;
 import com.activity.revision.user.UserDb;
+import com.activity.revision.utils.ChatBot;
+import com.activity.revision.utils.HelperMethods;
 import com.aerospike.client.AerospikeClient;
 import com.aerospike.client.Bin;
 import com.aerospike.client.Key;
@@ -36,10 +39,13 @@ public class Controller {
     
 	private DataGenerator dataGenerator;
 	
-	public Controller(UserService userService, DataGenerator dataGenerator) {
+	private ChatBot chatBot;
+	
+	public Controller(UserService userService, DataGenerator dataGenerator, ChatBot chatBot) {
 		super();
 		this.userService = userService;
 		this.dataGenerator = dataGenerator;
+		this.chatBot = chatBot;
 	}
 	
 	@PostMapping("/signUp")
@@ -127,8 +133,42 @@ public class Controller {
 	@GetMapping("/data")
 	public ResponseStatus xml() throws Exception {
 		ResponseStatus responseStatus = new ResponseStatus(SystemError.OK);
-		responseStatus.setObject(userService.xml());
+		responseStatus.setResponse(userService.xml());
 		return responseStatus;
 	}
 	
+	@GetMapping("/test2")
+	public ResponseStatus test() throws Exception {
+		ResponseStatus responseStatus = new ResponseStatus(SystemError.OK);
+		responseStatus.setResponse(HelperMethods.helper());
+		return responseStatus;
+	}
+	
+	@PostMapping("/chat1")
+	public ResponseStatus chat1(@RequestBody ChatRequest chatRequest) throws Exception {
+		ResponseStatus responseStatus = new ResponseStatus(SystemError.OK);
+		responseStatus.setResponse(chatBot.chat1(chatRequest));
+		return responseStatus;
+	}
+	
+	@PostMapping("/chat2")
+	public ResponseStatus chat2(@RequestBody ChatRequest chatRequest) throws Exception {
+		ResponseStatus responseStatus = new ResponseStatus(SystemError.OK);
+		responseStatus.setResponse(chatBot.chat2(chatRequest));
+		return responseStatus;
+	}
+	
+	@PostMapping("/chat3")
+	public ResponseStatus chat3(@RequestBody ChatRequest chatRequest) throws Exception {
+		ResponseStatus responseStatus = new ResponseStatus(SystemError.OK);
+		responseStatus.setResponse(chatBot.chat3(chatRequest));
+		return responseStatus;
+	}
+	
+	@GetMapping("/checkMethod")
+	public ResponseStatus checkMethod() throws Exception {
+		ResponseStatus responseStatus = new ResponseStatus(SystemError.OK);
+		responseStatus.setResponse(chatBot.getAnswer());
+		return responseStatus;
+	}
 }
